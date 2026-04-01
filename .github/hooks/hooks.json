@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "type": "command",
+        "command": "bash -c 'echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")]\" >> /home/frankl/Faks/NET/PointFlow/lab-1/agent_log.txt && cat >> /home/frankl/Faks/NET/PointFlow/lab-1/agent_log.txt && echo >> /home/frankl/Faks/NET/PointFlow/lab-1/agent_log.txt'"
+      }
+    ]
+  }
+}

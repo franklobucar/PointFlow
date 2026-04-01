@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="PointFlow.ConsoleApp/PointFlow.ConsoleApp.csproj" />
+  <Project Path="PointFlow.Model/PointFlow.Model.csproj" />
+</Solution>
