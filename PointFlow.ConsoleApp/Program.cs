@@ -357,9 +357,10 @@ var users = new List<AppUser> { ana, marko, petra };
 
 foreach (var user in users)
 {
-    Console.WriteLine($"{"═",0}{"",50}".Replace(" ", "═"));
+    //Console.WriteLine($"{"═",0}{"",50}".Replace(" ", "═"));
+    Console.WriteLine(new string('═', 50));
     Console.WriteLine($"  USER: {user.Username} | Balance: {user.CurrentBalance} pts | Total earned: {user.TotalPointsEarned} pts");
-    Console.WriteLine($"{"─",0}{"",50}".Replace(" ", "─"));
+    Console.WriteLine(new string('─', 50));
 
     Console.WriteLine("  TASKS:");
     foreach (var task in user.Tasks)
@@ -371,11 +372,13 @@ foreach (var user in users)
 
         foreach (var session in task.PomodoroSessions)
         {
-            Console.WriteLine($"         🍅 Pomodoro #{session.Id} ({session.DurationMinutes} min) — Notes: {session.LearnedNotes[..Math.Min(50, session.LearnedNotes.Length)]}...");
+            var notes = session.LearnedNotes.Length > 50 ? session.LearnedNotes[..50] + "..." : session.LearnedNotes;
+            Console.WriteLine($"         🍅 Pomodoro #{session.Id} ({session.DurationMinutes} min) — Notes: {notes}");
             foreach (var quiz in session.Quizzes)
             {
                 var passed = session.IsQuizPassed ? "PASSED" : "FAILED";
-                Console.WriteLine($"            Quiz [{passed}]: {quiz.Question[..Math.Min(50, quiz.Question.Length)]}...");
+                var question = quiz.Question.Length > 50 ? quiz.Question[..50] + "..." : quiz.Question;
+                Console.WriteLine($"            Quiz [{passed}]: {question}");
             }
         }
     }
@@ -404,7 +407,7 @@ foreach (var task in highPriorityTasks)
 
 Console.WriteLine();
 Console.WriteLine(new string('═', 50));
-Console.WriteLine("  LINQ: Korisnici s više od 100 bodova balansa");
+Console.WriteLine("  LINQ: Korisnici s više od 100 bodova");
 Console.WriteLine(new string('─', 50));
 var richUsers = users
     .Where(u => u.CurrentBalance > 100)
