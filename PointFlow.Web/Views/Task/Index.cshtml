@@ -1,0 +1,225 @@
+@using PointFlow.Model
+@model List<PointTask>
+
+@{
+    ViewData["Title"] = "Tasks";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — PointFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0f0f13;
+            color: #ffffff;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 240px 1fr;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            background: rgba(255,255,255,0.03);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar-brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #b026ff;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            color: #a0a0b0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background: rgba(176, 38, 255, 0.1);
+            color: #ffffff;
+        }
+
+        /* ── Main ── */
+        .main {
+            padding: 2.5rem 3rem;
+            overflow-y: auto;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .badge-count {
+            background: rgba(176, 38, 255, 0.15);
+            color: #b026ff;
+            border: 1px solid rgba(176, 38, 255, 0.3);
+            border-radius: 20px;
+            padding: 0.25rem 0.85rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* ── Task grid ── */
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .task-card {
+            backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 1.4rem 1.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            transition: transform 0.2s, border-color 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .task-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.18);
+        }
+
+        .task-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .task-title {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        .status-dot.completed { background: #00e676; box-shadow: 0 0 6px #00e676; }
+        .status-dot.pending   { background: #a0a0b0; }
+
+        .task-desc {
+            font-size: 0.82rem;
+            color: #a0a0b0;
+            line-height: 1.5;
+        }
+
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
+
+        .tag {
+            border-radius: 8px;
+            padding: 0.2rem 0.65rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .tag-priority-high   { background: rgba(255,51,102,0.15); color: #ff3366; border: 1px solid rgba(255,51,102,0.3); }
+        .tag-priority-medium { background: rgba(255,165,0,0.12);  color: #ffa500; border: 1px solid rgba(255,165,0,0.3); }
+        .tag-priority-low    { background: rgba(0,230,118,0.1);   color: #00e676; border: 1px solid rgba(0,230,118,0.25); }
+
+        .tag-points {
+            background: rgba(176,38,255,0.12);
+            color: #b026ff;
+            border: 1px solid rgba(176,38,255,0.3);
+        }
+
+        .tag-completed {
+            background: rgba(0,230,118,0.1);
+            color: #00e676;
+            border: 1px solid rgba(0,230,118,0.25);
+        }
+
+        .tag-pending {
+            background: rgba(255,255,255,0.05);
+            color: #a0a0b0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<nav class="sidebar">
+    <div class="sidebar-brand">⚡ PointFlow</div>
+    <a asp-controller="Home"  asp-action="Index">Dashboard</a>
+    <a asp-controller="User"  asp-action="Index">Users</a>
+    <a asp-controller="Task"  asp-action="Index" class="active">Tasks</a>
+</nav>
+
+<main class="main">
+    <div class="page-header">
+        <h1>Tasks</h1>
+        <span class="badge-count">@Model.Count total</span>
+    </div>
+
+    <div class="task-grid">
+        @foreach (var task in Model)
+        {
+            <a class="task-card" asp-controller="Task" asp-action="Details" asp-route-id="@task.Id">
+                <div class="task-card-top">
+                    <span class="task-title">@task.Title</span>
+                    <span class="status-dot @(task.IsCompleted ? "completed" : "pending")"></span>
+                </div>
+                <p class="task-desc">@task.Description</p>
+                <div class="task-meta">
+                    <span class="tag tag-priority-@task.Priority.ToString().ToLower()">@task.Priority</span>
+                    <span class="tag tag-points">+@task.PointsReward pts</span>
+                    <span class="tag @(task.IsCompleted ? "tag-completed" : "tag-pending")">
+                        @(task.IsCompleted ? "Completed" : "Pending")
+                    </span>
+                </div>
+            </a>
+        }
+    </div>
+</main>
+
+</body>
+</html>
