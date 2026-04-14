@@ -1,8 +1,130 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using PointFlow.Web.Repositories
+@inject AppUserMockRepository UserRepo
+@inject PointTaskMockRepository TaskRepo
+@inject RewardMockRepository RewardRepo
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    var users       = UserRepo.GetAll();
+    var tasks       = TaskRepo.GetAll();
+    var rewards     = RewardRepo.GetAll();
+
+    var totalPoints    = users.Sum(u => u.TotalPointsEarned);
+    var completedTasks = tasks.Count(t => t.IsCompleted);
+    var pendingTasks   = tasks.Count(t => !t.IsCompleted);
+    var unlockedRewards = rewards.Count(r => !r.IsLocked);
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="dash-header">
+    <div>
+        <h1 class="dash-title">Dashboard</h1>
+        <p class="dash-subtitle">Pregled aktivnosti — PointFlow sustav bodovanja</p>
+    </div>
 </div>
+
+<!-- ── Stat cards ── -->
+<div class="stat-grid">
+    <div class="stat-card stat-card--green">
+        <div class="stat-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="stat-card-body">
+            <div class="stat-card-value">@totalPoints</div>
+            <div class="stat-card-label">Ukupno bodova</div>
+        </div>
+    </div>
+
+    <div class="stat-card stat-card--purple">
+        <div class="stat-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <div class="stat-card-body">
+            <div class="stat-card-value">@users.Count</div>
+            <div class="stat-card-label">Korisnici</div>
+        </div>
+    </div>
+
+    <div class="stat-card stat-card--green">
+        <div class="stat-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <div class="stat-card-body">
+            <div class="stat-card-value">@completedTasks</div>
+            <div class="stat-card-label">Završeni taskovi</div>
+        </div>
+    </div>
+
+    <div class="stat-card stat-card--red">
+        <div class="stat-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="stat-card-body">
+            <div class="stat-card-value">@pendingTasks</div>
+            <div class="stat-card-label">Aktivni taskovi</div>
+        </div>
+    </div>
+
+    <div class="stat-card stat-card--purple">
+        <div class="stat-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="stat-card-body">
+            <div class="stat-card-value">@unlockedRewards</div>
+            <div class="stat-card-label">Otključane nagrade</div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Two-column bottom section ── -->
+<div class="dash-bottom">
+
+    <!-- Recent tasks -->
+    <section class="dash-panel">
+        <div class="dash-panel-header">
+            <h2 class="dash-panel-title">Nedavni taskovi</h2>
+            <a class="dash-panel-link" asp-controller="Task" asp-action="Index">Svi taskovi →</a>
+        </div>
+        <div class="task-list">
+            @foreach (var task in tasks.TakeLast(4).Reverse())
+            {
+                <div class="tl-item">
+                    <span class="tl-dot @(task.IsCompleted ? "tl-dot--done" : "tl-dot--pending")"></span>
+                    <div class="tl-info">
+                        <a class="tl-title" asp-controller="Task" asp-action="Details" asp-route-id="@task.Id">@task.Title</a>
+                        <span class="tl-meta">User #@task.AppUserId · @task.Priority</span>
+                    </div>
+                    <span class="tl-pts">+@task.PointsReward</span>
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- Leaderboard -->
+    <section class="dash-panel">
+        <div class="dash-panel-header">
+            <h2 class="dash-panel-title">Ljestvica korisnika</h2>
+            <a class="dash-panel-link" asp-controller="User" asp-action="Index">Svi korisnici →</a>
+        </div>
+        <div class="leaderboard">
+            @{
+                var ranked = users.OrderByDescending(u => u.TotalPointsEarned).ToList();
+            }
+            @for (int i = 0; i < ranked.Count; i++)
+            {
+                var u = ranked[i];
+                <a class="lb-row" asp-controller="User" asp-action="Details" asp-route-id="@u.Id">
+                    <span class="lb-rank lb-rank--@(i + 1)">#@(i + 1)</span>
+                    <span class="lb-avatar">@u.Username[0].ToString().ToUpper()</span>
+                    <div class="lb-user">
+                        <span class="lb-username">@u.Username</span>
+                        <span class="lb-email">@u.Email</span>
+                    </div>
+                    <span class="lb-score">@u.TotalPointsEarned pts</span>
+                </a>
+            }
+        </div>
+    </section>
+
+</div>
+

@@ -3,48 +3,79 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PointFlow.Web</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>@ViewData["Title"] — PointFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PointFlow.Web.styles.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PointFlow.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+
+    <div class="pf-shell">
+
+        <!-- ── Sidebar ── -->
+        <aside class="pf-sidebar">
+            <a class="pf-brand" asp-controller="Home" asp-action="Index">
+                <span class="pf-brand-icon">⚡</span>
+                PointFlow
+            </a>
+
+            <nav class="pf-nav">
+                <span class="pf-nav-label">Main</span>
+                <a class="pf-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "is-active" : "")"
+                   asp-controller="Home" asp-action="Index">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    Početna
+                </a>
+                <a class="pf-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "User" ? "is-active" : "")"
+                   asp-controller="User" asp-action="Index">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                    Korisnici
+                </a>
+                <a class="pf-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Task" ? "is-active" : "")"
+                   asp-controller="Task" asp-action="Index">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                    Taskovi
+                </a>
+            </nav>
+
+            <div class="pf-sidebar-footer">
+                <span class="pf-version">v1.0.0</span>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </aside>
+
+        <!-- ── Content area ── -->
+        <div class="pf-content-wrap">
+
+            <!-- Topbar with breadcrumbs -->
+            <header class="pf-topbar">
+                <nav class="pf-breadcrumbs" aria-label="breadcrumb">
+                    <a class="pf-crumb" asp-controller="Home" asp-action="Index">Početna</a>
+                    @if (ViewData["Breadcrumb"] is IEnumerable<(string Label, string? Url)> crumbs)
+                    {
+                        foreach (var crumb in crumbs)
+                        {
+                            <span class="pf-crumb-sep">›</span>
+                            if (crumb.Url is not null)
+                            {
+                                <a class="pf-crumb" href="@crumb.Url">@crumb.Label</a>
+                            }
+                            else
+                            {
+                                <span class="pf-crumb pf-crumb--current">@crumb.Label</span>
+                            }
+                        }
+                    }
+                </nav>
+            </header>
+
+            <main class="pf-main">
+                @RenderBody()
+            </main>
+
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - PointFlow.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
