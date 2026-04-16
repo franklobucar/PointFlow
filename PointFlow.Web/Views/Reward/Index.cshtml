@@ -1,0 +1,31 @@
+@using PointFlow.Model
+@model List<Reward>
+
+@{
+    ViewData["Title"] = "Nagrade";
+}
+
+<div class="page-header">
+    <h1>Nagrade</h1>
+    <span class="badge-count">@Model.Count total</span>
+</div>
+
+<div class="reward-grid">
+    @foreach (var reward in Model)
+    {
+        <a class="reward-card" asp-controller="Reward" asp-action="Details" asp-route-id="@reward.Id">
+            <div class="reward-card-top">
+                <span class="reward-card-icon">@(reward.IsLocked ? "🔒" : "🔓")</span>
+                <span class="lock-badge @(reward.IsLocked ? "locked" : "unlocked")">
+                    @(reward.IsLocked ? "Locked" : "Unlocked")
+                </span>
+            </div>
+            <div class="reward-card-name">@reward.Name</div>
+            <p class="reward-card-desc">@reward.Description</p>
+            <div class="reward-card-footer">
+                <span class="reward-cost-tag">@reward.PointsCost pts</span>
+                <span class="reward-user-tag">User #@reward.AppUserId</span>
+            </div>
+        </a>
+    }
+</div>

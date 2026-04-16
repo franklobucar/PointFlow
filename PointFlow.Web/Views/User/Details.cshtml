@@ -5,7 +5,10 @@
     ViewData["Title"] = Model.Username;
 }
 
-<a class="back-link" asp-controller="User" asp-action="Index">← Natrag na Korisnike</a>
+<a class="back-link" asp-controller="User" asp-action="Index">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    Natrag na Korisnike
+</a>
 
     <div class="profile-card">
         <div class="profile-avatar">@Model.Username[0].ToString().ToUpper()</div>
@@ -18,6 +21,38 @@
                 <span class="stat-pill total">Total earned: @Model.TotalPointsEarned pts</span>
             </div>
         </div>
+    </div>
+
+    <div>
+        <div class="section-title">Taskovi</div>
+        @if (Model.Tasks is null || !Model.Tasks.Any())
+        {
+            <p class="empty-state">Nema taskova.</p>
+        }
+        else
+        {
+            <div class="task-list">
+                @foreach (var task in Model.Tasks)
+                {
+                    <div class="task-list-item">
+                        <div class="task-list-item__left">
+                            <span class="priority-tag priority-@task.Priority.ToString().ToLower()">@task.Priority</span>
+                            @if (task.IsCompleted)
+                            {
+                                <span class="status-pill status-pill--done">Završeno</span>
+                            }
+                            else
+                            {
+                                <span class="status-pill status-pill--pending">Na čekanju</span>
+                            }
+                        </div>
+                        <a asp-controller="Task" asp-action="Details" asp-route-id="@task.Id"
+                           class="task-list-item__title">@task.Title</a>
+                        <span class="points-tag">+@task.PointsReward XP</span>
+                    </div>
+                }
+            </div>
+        }
     </div>
 
     <div>

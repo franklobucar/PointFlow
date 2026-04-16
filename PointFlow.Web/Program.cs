@@ -8,6 +8,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<AppUserMockRepository>();
 builder.Services.AddSingleton<PointTaskMockRepository>();
 builder.Services.AddSingleton<RewardMockRepository>();
+builder.Services.AddSingleton<CategoryMockRepository>();
+builder.Services.AddSingleton<TagMockRepository>();
+builder.Services.AddSingleton<PomodoroSessionMockRepository>();
 
 var app = builder.Build();
 

@@ -14,6 +14,7 @@ public class UserController : Controller
 
     public IActionResult Index()
     {
+        ViewData["Breadcrumb"] = new (string Label, string? Url)[] { ("Korisnici", null) };
         var users = _userRepository.GetAll();
         return View(users);
     }
@@ -24,6 +25,7 @@ public class UserController : Controller
         if (user is null)
             return NotFound();
 
+        ViewData["Breadcrumb"] = new (string Label, string? Url)[] { ("Korisnici", "/User"), (user.Username, null) };
         return View(user);
     }
 }

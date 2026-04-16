@@ -71,3 +71,6 @@ ScaffoldingReadMe.txt
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Agent context
+STRUCTURE.md

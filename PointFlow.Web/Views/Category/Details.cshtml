@@ -1,0 +1,60 @@
+@model PointFlow.Model.Category
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<a asp-controller="Category" asp-action="Index" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    Nazad na kategorije
+</a>
+
+<div class="detail-card">
+    <div class="detail-header">
+        <span class="detail-icon">🗂️</span>
+        <div>
+            <h1 class="detail-title">@Model.Name</h1>
+            <p class="detail-subtitle">@Model.Description</p>
+        </div>
+    </div>
+</div>
+
+<div class="section-header">
+    <h2 class="section-title">Taskovi u ovoj kategoriji</h2>
+    <span class="badge badge--purple">@Model.Tasks.Count taskova</span>
+</div>
+
+@if (Model.Tasks.Count == 0)
+{
+    <div class="empty-state">Nema taskova u ovoj kategoriji.</div>
+}
+else
+{
+    <div class="task-grid">
+        @foreach (var task in Model.Tasks)
+        {
+            <div class="task-card @(task.IsCompleted ? "task-card--done" : "")">
+                <div class="task-card__top">
+                    <span class="priority-tag priority-@task.Priority.ToString().ToLower()">@task.Priority</span>
+                    @if (task.IsCompleted)
+                    {
+                        <span class="status-pill status-pill--done">Završeno</span>
+                    }
+                    else
+                    {
+                        <span class="status-pill status-pill--pending">Na čekanju</span>
+                    }
+                </div>
+                <h3 class="task-card__title">@task.Title</h3>
+                <p class="task-card__desc">@task.Description</p>
+                <div class="task-card__footer">
+                    <span class="points-tag">+@task.PointsReward XP</span>
+                    <a asp-controller="Task" asp-action="Details" asp-route-id="@task.Id" class="fwd-link">
+                        Detalji
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}

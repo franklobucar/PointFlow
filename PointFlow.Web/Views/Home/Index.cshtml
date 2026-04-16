@@ -83,7 +83,10 @@
     <section class="dash-panel">
         <div class="dash-panel-header">
             <h2 class="dash-panel-title">Nedavni taskovi</h2>
-            <a class="dash-panel-link" asp-controller="Task" asp-action="Index">Svi taskovi →</a>
+            <a class="fwd-link" asp-controller="Task" asp-action="Index">
+                Svi taskovi
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
         </div>
         <div class="task-list">
             @foreach (var task in tasks.TakeLast(4).Reverse())
@@ -104,7 +107,10 @@
     <section class="dash-panel">
         <div class="dash-panel-header">
             <h2 class="dash-panel-title">Ljestvica korisnika</h2>
-            <a class="dash-panel-link" asp-controller="User" asp-action="Index">Svi korisnici →</a>
+            <a class="fwd-link" asp-controller="User" asp-action="Index">
+                Svi korisnici
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
         </div>
         <div class="leaderboard">
             @{

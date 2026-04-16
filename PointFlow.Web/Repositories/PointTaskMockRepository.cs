@@ -16,7 +16,9 @@ public class PointTaskMockRepository
             Priority = TaskPriority.High,
             CreatedAt = new DateTime(2026, 3, 1),
             AppUserId = 1,
-            CategoryId = 1
+            AppUser = new AppUser { Id = 1, Username = "ana_k", Email = "ana@example.com" },
+            CategoryId = 1,
+            Category = new Category { Id = 1, Name = "Learning" }
         },
         new PointTask
         {
@@ -28,7 +30,9 @@ public class PointTaskMockRepository
             Priority = TaskPriority.Medium,
             CreatedAt = new DateTime(2026, 3, 3),
             AppUserId = 1,
-            CategoryId = 2
+            AppUser = new AppUser { Id = 1, Username = "ana_k", Email = "ana@example.com" },
+            CategoryId = 2,
+            Category = new Category { Id = 2, Name = "Fitness" }
         },
         new PointTask
         {
@@ -40,7 +44,9 @@ public class PointTaskMockRepository
             Priority = TaskPriority.Low,
             CreatedAt = new DateTime(2026, 3, 10),
             AppUserId = 1,
-            CategoryId = 1
+            AppUser = new AppUser { Id = 1, Username = "ana_k", Email = "ana@example.com" },
+            CategoryId = 1,
+            Category = new Category { Id = 1, Name = "Learning" }
         },
         new PointTask
         {
@@ -52,7 +58,9 @@ public class PointTaskMockRepository
             Priority = TaskPriority.High,
             CreatedAt = new DateTime(2026, 3, 20),
             AppUserId = 2,
-            CategoryId = 3
+            AppUser = new AppUser { Id = 2, Username = "marko_p", Email = "marko@example.com" },
+            CategoryId = 3,
+            Category = new Category { Id = 3, Name = "Work" }
         },
         new PointTask
         {
@@ -64,7 +72,9 @@ public class PointTaskMockRepository
             Priority = TaskPriority.Medium,
             CreatedAt = new DateTime(2026, 3, 22),
             AppUserId = 2,
-            CategoryId = 2
+            AppUser = new AppUser { Id = 2, Username = "marko_p", Email = "marko@example.com" },
+            CategoryId = 2,
+            Category = new Category { Id = 2, Name = "Fitness" }
         },
         new PointTask
         {
@@ -76,7 +86,9 @@ public class PointTaskMockRepository
             Priority = TaskPriority.High,
             CreatedAt = new DateTime(2026, 3, 15),
             AppUserId = 3,
-            CategoryId = 1
+            AppUser = new AppUser { Id = 3, Username = "petra_v", Email = "petra@example.com" },
+            CategoryId = 1,
+            Category = new Category { Id = 1, Name = "Learning" }
         }
     ];
 

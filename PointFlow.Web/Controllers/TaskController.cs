@@ -14,6 +14,7 @@ public class TaskController : Controller
 
     public IActionResult Index()
     {
+        ViewData["Breadcrumb"] = new (string Label, string? Url)[] { ("Taskovi", null) };
         var tasks = _taskRepository.GetAll();
         return View(tasks);
     }
@@ -24,6 +25,7 @@ public class TaskController : Controller
         if (task is null)
             return NotFound();
 
+        ViewData["Breadcrumb"] = new (string Label, string? Url)[] { ("Taskovi", "/Task"), (task.Title, null) };
         return View(task);
     }
 }

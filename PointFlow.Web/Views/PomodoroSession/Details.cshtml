@@ -1,0 +1,84 @@
+@model PointFlow.Model.PomodoroSession
+
+@{
+    ViewData["Title"] = "Sesija #" + Model.Id;
+}
+
+<a asp-controller="PomodoroSession" asp-action="Index" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    Nazad na sesije
+</a>
+
+<div class="detail-card">
+    <div class="detail-header">
+        <span class="detail-icon">🍅</span>
+        <div>
+            <h1 class="detail-title">Sesija #@Model.Id</h1>
+            <p class="detail-subtitle">Task #@Model.PointTaskId</p>
+        </div>
+        @if (Model.IsQuizPassed)
+        {
+            <span class="badge badge--green">Quiz položen</span>
+        }
+        else
+        {
+            <span class="badge badge--red">Quiz nije položen</span>
+        }
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-row">
+            <span class="detail-label">Trajanje</span>
+            <span class="detail-value">@Model.DurationMinutes minuta</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Početak</span>
+            <span class="detail-value">@Model.StartTime.ToString("dd.MM.yyyy HH:mm")</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Kraj</span>
+            <span class="detail-value">@Model.EndTime.ToString("dd.MM.yyyy HH:mm")</span>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.LearnedNotes))
+        {
+            <div class="detail-row detail-row--full">
+                <span class="detail-label">Bilješke</span>
+                <span class="detail-value">@Model.LearnedNotes</span>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="section-header">
+    <h2 class="section-title">Quizovi</h2>
+    <span class="badge badge--purple">@Model.Quizzes.Count pitanja</span>
+</div>
+
+@if (Model.Quizzes.Count == 0)
+{
+    <div class="empty-state">Nema quizova za ovu sesiju.</div>
+}
+else
+{
+    <div class="quiz-list">
+        @foreach (var quiz in Model.Quizzes)
+        {
+            <div class="quiz-card">
+                <div class="quiz-question">
+                    <span class="quiz-number">#@quiz.Id</span>
+                    <p class="quiz-text">@quiz.Question</p>
+                </div>
+                <div class="quiz-answers">
+                    <div class="quiz-answer quiz-answer--expected">
+                        <span class="quiz-answer__label">Očekivani odgovor</span>
+                        <span class="quiz-answer__value">@quiz.ExpectedAnswer</span>
+                    </div>
+                    <div class="quiz-answer quiz-answer--user @(quiz.UserAnswer == quiz.ExpectedAnswer ? "quiz-answer--correct" : "quiz-answer--wrong")">
+                        <span class="quiz-answer__label">Tvoj odgovor</span>
+                        <span class="quiz-answer__value">@quiz.UserAnswer</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
