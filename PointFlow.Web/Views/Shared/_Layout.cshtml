@@ -59,6 +59,11 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                     Pomodoro
                 </a>
+                <a class="pf-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Quiz" ? "is-active" : "")"
+                   asp-controller="Quiz" asp-action="Index">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 8h4"/><path d="M4 6h16"/><rect x="4" y="6" width="16" height="14" rx="2"/><path d="M8 12h8"/><path d="M8 16h5"/></svg>
+                    Kvizovi
+                </a>
             </nav>
 
             <div class="pf-sidebar-footer">

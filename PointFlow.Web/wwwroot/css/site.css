@@ -1154,3 +1154,120 @@ a { text-decoration: none; color: inherit; }
     transition: opacity var(--transition);
 }
 .detail-link:hover { opacity: 0.75; }
+
+.page-header--actions {
+    align-items: center;
+}
+
+.quiz-actions-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.detail-item--full {
+    grid-column: 1 / -1;
+}
+
+.form-card {
+    backdrop-filter: var(--blur);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem 2rem;
+    max-width: 900px;
+}
+
+.pf-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-field--full {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.form-input {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text);
+    padding: 0.65rem 0.85rem;
+    font-size: 0.9rem;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: rgba(176, 38, 255, 0.45);
+    box-shadow: 0 0 0 2px rgba(176, 38, 255, 0.14);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.7rem;
+}
+
+.btn-primary-custom,
+.btn-ghost {
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-primary-custom {
+    color: #fff;
+    background: rgba(176, 38, 255, 0.28);
+    border-color: rgba(176, 38, 255, 0.45);
+}
+
+.btn-primary-custom:hover {
+    background: rgba(176, 38, 255, 0.38);
+}
+
+.btn-ghost {
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--border);
+}
+
+.btn-ghost:hover {
+    color: var(--text);
+    border-color: var(--border-hover);
+}
+
+.validation-summary,
+.field-validation {
+    color: var(--red);
+    font-size: 0.78rem;
+}

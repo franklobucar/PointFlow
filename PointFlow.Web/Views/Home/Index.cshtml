@@ -1,14 +1,12 @@
-﻿@using PointFlow.Web.Repositories
-@inject AppUserMockRepository UserRepo
-@inject PointTaskMockRepository TaskRepo
-@inject RewardMockRepository RewardRepo
+﻿@using PointFlow.Web.Models
+@model DashboardViewModel
 
 @{
     ViewData["Title"] = "Dashboard";
 
-    var users       = UserRepo.GetAll();
-    var tasks       = TaskRepo.GetAll();
-    var rewards     = RewardRepo.GetAll();
+    var users       = Model.Users;
+    var tasks       = Model.Tasks;
+    var rewards     = Model.Rewards;
 
     var totalPoints    = users.Sum(u => u.TotalPointsEarned);
     var completedTasks = tasks.Count(t => t.IsCompleted);

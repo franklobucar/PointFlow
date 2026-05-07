@@ -3,7 +3,7 @@
     "UserPromptSubmit": [
       {
         "type": "command",
-        "command": "bash -c 'echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")]\" >> /home/frankl/Faks/NET/PointFlow/lab-2/agent_log.txt && cat >> /home/frankl/Faks/NET/PointFlow/lab-2/agent_log.txt && echo >> /home/frankl/Faks/NET/PointFlow/lab-2/agent_log.txt'"
+        "command": "bash -c 'echo \"[$(date +\"%Y-%m-%d %H:%M:%S\")]\" >> /home/frankl/Faks/NET/PointFlow/lab-3/agent_log.txt && cat >> /home/frankl/Faks/NET/PointFlow/lab-3/agent_log.txt && echo >> /home/frankl/Faks/NET/PointFlow/lab-3/agent_log.txt'"
       }
     ]
   }

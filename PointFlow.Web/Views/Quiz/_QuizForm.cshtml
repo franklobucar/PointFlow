@@ -1,0 +1,42 @@
+@model PointFlow.Model.Quiz
+@using PointFlow.Model
+
+@{
+    var sessions = ViewBag.PomodoroSessions as IEnumerable<PomodoroSession> ?? Enumerable.Empty<PomodoroSession>();
+}
+
+<div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+<div class="form-grid">
+    <div class="form-field form-field--full">
+        <label asp-for="Question" class="form-label"></label>
+        <textarea asp-for="Question" class="form-input form-textarea" rows="3"></textarea>
+        <span asp-validation-for="Question" class="field-validation"></span>
+    </div>
+
+    <div class="form-field form-field--full">
+        <label asp-for="ExpectedAnswer" class="form-label"></label>
+        <textarea asp-for="ExpectedAnswer" class="form-input form-textarea" rows="3"></textarea>
+        <span asp-validation-for="ExpectedAnswer" class="field-validation"></span>
+    </div>
+
+    <div class="form-field form-field--full">
+        <label asp-for="UserAnswer" class="form-label"></label>
+        <textarea asp-for="UserAnswer" class="form-input form-textarea" rows="3"></textarea>
+        <span asp-validation-for="UserAnswer" class="field-validation"></span>
+    </div>
+
+    <div class="form-field">
+        <label asp-for="PomodoroSessionId" class="form-label">Pomodoro sesija</label>
+        <select asp-for="PomodoroSessionId" class="form-input">
+            <option value="">-- Odaberite sesiju --</option>
+            @foreach (var session in sessions)
+            {
+                <option value="@session.Id">
+                    #@session.Id (@session.StartTime.ToString("yyyy-MM-dd HH:mm"), @session.DurationMinutes min)
+                </option>
+            }
+        </select>
+        <span asp-validation-for="PomodoroSessionId" class="field-validation"></span>
+    </div>
+</div>

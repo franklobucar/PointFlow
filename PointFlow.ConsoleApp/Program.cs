@@ -139,7 +139,10 @@ var anaReward2 = new Reward
 
 ana.Tasks    = [anaTask1, anaTask2, anaTask3];
 ana.Rewards  = [anaReward1, anaReward2];
-tagStudy.Tasks.AddRange([anaTask1, anaTask3]);
+foreach (var task in new[] { anaTask1, anaTask3 })
+{
+    tagStudy.Tasks.Add(task);
+}
 tagHealth.Tasks.Add(anaTask2);
 tagPersonal.Tasks.Add(anaTask3);
 
@@ -230,7 +233,10 @@ var markoReward2 = new Reward
 
 marko.Tasks   = [markoTask1, markoTask2, markoTask3];
 marko.Rewards = [markoReward1, markoReward2];
-tagWork.Tasks.AddRange([markoTask1, markoTask3]);
+foreach (var task in new[] { markoTask1, markoTask3 })
+{
+    tagWork.Tasks.Add(task);
+}
 tagHealth.Tasks.Add(markoTask2);
 tagPersonal.Tasks.Add(markoTask2);
 tagStudy.Tasks.Add(markoTask3);
@@ -347,7 +353,10 @@ var petraReward2 = new Reward
 
 petra.Tasks   = [petraTask1, petraTask2, petraTask3];
 petra.Rewards = [petraReward1, petraReward2];
-tagStudy.Tasks.AddRange([petraTask1, petraTask2]);
+foreach (var task in new[] { petraTask1, petraTask2 })
+{
+    tagStudy.Tasks.Add(task);
+}
 tagWork.Tasks.Add(petraTask2);
 tagHealth.Tasks.Add(petraTask3);
 tagPersonal.Tasks.Add(petraTask3);

@@ -1,27 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
-using PointFlow.Web.Repositories;
+using Microsoft.EntityFrameworkCore;
+using PointFlow.Model;
 
 namespace PointFlow.Web.Controllers;
 
 public class UserController : Controller
 {
-    private readonly AppUserMockRepository _userRepository;
+    private readonly PointFlowDbContext _dbContext;
 
-    public UserController(AppUserMockRepository userRepository)
+    public UserController(PointFlowDbContext dbContext)
     {
-        _userRepository = userRepository;
+        _dbContext = dbContext;
     }
 
     public IActionResult Index()
     {
         ViewData["Breadcrumb"] = new (string Label, string? Url)[] { ("Korisnici", null) };
-        var users = _userRepository.GetAll();
+        var users = _dbContext.Users.ToList();
         return View(users);
     }
 
     public IActionResult Details(int id)
     {
-        var user = _userRepository.GetById(id);
+        var user = _dbContext.Users
+            .Include(u => u.Tasks)
+            .Include(u => u.Rewards)
+            .FirstOrDefault(u => u.Id == id);
         if (user is null)
             return NotFound();
 

@@ -1,0 +1,58 @@
+@model IEnumerable<PointFlow.Model.Quiz>
+
+@{
+    ViewData["Title"] = "Kvizovi";
+}
+
+<div class="page-header page-header--actions">
+    <div>
+        <h1 class="page-title">Kvizovi</h1>
+        <p class="page-subtitle">Pitanja i odgovori povezani s pomodoro sesijama</p>
+    </div>
+    <a asp-controller="Quiz" asp-action="Create" class="fwd-link">
+        Novi kviz
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">Nema kvizova za prikaz.</div>
+}
+else
+{
+    <div class="quiz-list">
+        @foreach (var quiz in Model)
+        {
+            var isCorrect = string.Equals(quiz.ExpectedAnswer?.Trim(), quiz.UserAnswer?.Trim(), StringComparison.OrdinalIgnoreCase);
+            <div class="quiz-card">
+                <div class="quiz-question">
+                    <span class="quiz-number">KVIZ #@quiz.Id</span>
+                    <p class="quiz-text">@quiz.Question</p>
+                </div>
+
+                <div class="quiz-answers">
+                    <div class="quiz-answer quiz-answer--expected">
+                        <span class="quiz-answer__label">Očekivani odgovor</span>
+                        <span class="quiz-answer__value">@quiz.ExpectedAnswer</span>
+                    </div>
+                    <div class="quiz-answer @(isCorrect ? "quiz-answer--correct" : "quiz-answer--wrong")">
+                        <span class="quiz-answer__label">Korisnikov odgovor</span>
+                        <span class="quiz-answer__value">@quiz.UserAnswer</span>
+                    </div>
+                </div>
+
+                <div class="quiz-actions-row">
+                    <span class="badge @(isCorrect ? "badge--green" : "badge--red")">
+                        @(isCorrect ? "Točno" : "Netočno")
+                    </span>
+                    <span class="session-task-id">Sesija: #@quiz.PomodoroSessionId</span>
+                    <a asp-controller="Quiz" asp-action="Details" asp-route-id="@quiz.Id" class="fwd-link">
+                        Detalji
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}

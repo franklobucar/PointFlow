@@ -1,0 +1,49 @@
+@model PointFlow.Model.Quiz
+
+@{
+    ViewData["Title"] = $"Kviz #{Model.Id}";
+    var isCorrect = string.Equals(Model.ExpectedAnswer?.Trim(), Model.UserAnswer?.Trim(), StringComparison.OrdinalIgnoreCase);
+}
+
+<a asp-controller="Quiz" asp-action="Index" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    Nazad na kvizove
+</a>
+
+<div class="detail-card">
+    <div class="detail-header">
+        <span class="detail-icon">🧠</span>
+        <div>
+            <h1 class="detail-title">Kviz #@Model.Id</h1>
+            <p class="detail-subtitle">Pomodoro sesija #@Model.PomodoroSessionId</p>
+        </div>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-item detail-item--full">
+            <div class="detail-item-label">Pitanje</div>
+            <div class="detail-item-value">@Model.Question</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-item-label">Očekivani odgovor</div>
+            <div class="detail-item-value">@Model.ExpectedAnswer</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-item-label">Korisnikov odgovor</div>
+            <div class="detail-item-value">@Model.UserAnswer</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-item-label">Rezultat</div>
+            <div class="detail-item-value @(isCorrect ? "value-priority-low" : "value-priority-high")">
+                @(isCorrect ? "Točno" : "Netočno")
+            </div>
+        </div>
+    </div>
+
+    <div class="quiz-actions-row" style="margin-top:1.2rem;">
+        <a asp-controller="Quiz" asp-action="Edit" asp-route-id="@Model.Id" class="fwd-link">
+            Uredi kviz
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+    </div>
+</div>

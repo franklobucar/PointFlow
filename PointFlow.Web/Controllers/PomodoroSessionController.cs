@@ -1,27 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
-using PointFlow.Web.Repositories;
+using Microsoft.EntityFrameworkCore;
+using PointFlow.Model;
 
 namespace PointFlow.Web.Controllers;
 
 public class PomodoroSessionController : Controller
 {
-    private readonly PomodoroSessionMockRepository _sessionRepository;
+    private readonly PointFlowDbContext _dbContext;
 
-    public PomodoroSessionController(PomodoroSessionMockRepository sessionRepository)
+    public PomodoroSessionController(PointFlowDbContext dbContext)
     {
-        _sessionRepository = sessionRepository;
+        _dbContext = dbContext;
     }
 
     public IActionResult Index()
     {
         ViewData["Breadcrumb"] = new (string Label, string? Url)[] { ("Pomodoro", null) };
-        var sessions = _sessionRepository.GetAll();
+        var sessions = _dbContext.PomodoroSessions.ToList();
         return View(sessions);
     }
 
     public IActionResult Details(int id)
     {
-        var session = _sessionRepository.GetById(id);
+        var session = _dbContext.PomodoroSessions
+            .Include(s => s.Quizzes)
+            .FirstOrDefault(s => s.Id == id);
         if (session is null)
             return NotFound();
 

@@ -1,35 +1,33 @@
 using Microsoft.AspNetCore.Mvc;
-using PointFlow.Web.Repositories;
+using Microsoft.EntityFrameworkCore;
+using PointFlow.Model;
 
 namespace PointFlow.Web.Controllers;
 
 public class CategoryController : Controller
 {
-    private readonly CategoryMockRepository _categoryRepository;
-    private readonly PointTaskMockRepository _taskRepository;
+    private readonly PointFlowDbContext _dbContext;
 
-    public CategoryController(CategoryMockRepository categoryRepository, PointTaskMockRepository taskRepository)
+    public CategoryController(PointFlowDbContext dbContext)
     {
-        _categoryRepository = categoryRepository;
-        _taskRepository = taskRepository;
+        _dbContext = dbContext;
     }
 
     public IActionResult Index()
     {
         ViewData["Breadcrumb"] = new (string Label, string? Url)[] { ("Kategorije", null) };
-        var categories = _categoryRepository.GetAll();
+        var categories = _dbContext.Categories.ToList();
         return View(categories);
     }
 
     public IActionResult Details(int id)
     {
-        var category = _categoryRepository.GetById(id);
+        var category = _dbContext.Categories
+            .Include(c => c.Tasks)
+            .FirstOrDefault(c => c.Id == id);
+
         if (category is null)
             return NotFound();
-
-        category.Tasks = _taskRepository.GetAll()
-            .Where(t => t.CategoryId == id)
-            .ToList();
 
         ViewData["Breadcrumb"] = new (string Label, string? Url)[] { ("Kategorije", "/Category"), (category.Name, null) };
         return View(category);
